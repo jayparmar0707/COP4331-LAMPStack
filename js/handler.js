@@ -1,4 +1,4 @@
-const urlBase = "http://COP4331-5.com/api/";
+const urlBase = "http://friendidex.xyz/api/";
 
 // Logs a user into the database, redirects to contacts page
 function handleLogin() {
@@ -6,22 +6,25 @@ function handleLogin() {
     const password = document.querySelector("#login-password").value;
 
     const params = {
-        username: username,
+        login: username,
         password: md5(password),
     };
-    doRequest(logIn, "Login", params);
-}
 
-function logIn(resp) {
-    if (!resp || resp.error != null) {
-        document.querySelector("#login-result").innerHTML =
-            "Invalid username or password";
-        console.log(resp.error);
-        return;
-    }
-
-    setCookie(resp.id);
-    window.location.href = "contacts.html";
+    fetch(urlBase + "Login" + ext, {  
+	method: 'POST',
+	body: JSON.stringify(params),
+    	})
+	.then(resp => resp.json())
+	.then(resp => {   
+	    if (resp.error.length > 0) throw Error(resp.error);
+	    console.log(resp);
+	    setCookie(resp.id);
+	    window.location.href = "contacts.html";
+	}).catch( err =>{
+            document.querySelector("#login-result").innerHTML =
+                "Invalid username or password";
+            console.log(err);
+    	});
 }
 
 // Registers a user into the database, then logs them in

@@ -1,4 +1,4 @@
-const baseURL = "http://friendidex.xyz/LAMPAPI/";
+const baseURL = "http://friendidex.xyz/api/";
 const ext = ".php";
 
 class User {
@@ -54,7 +54,7 @@ function getID() {
         return new Error("getID error: cookie doesn't exist");
     }
     const id = document.cookie.split(";")[0].split("=")[1];
-    if (!cookie || !id) {
+    if (!document.cookie || !id) {
         return new Error("getID error: invalid cookie");
     }
 
